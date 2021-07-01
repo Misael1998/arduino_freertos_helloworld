@@ -26,7 +26,7 @@ void main_blinky(void) {
 
     perror("open_port: Unable to open /dev/ttyf1 - ");
   } else {
-    fcntl(*fd, F_SETFL, 0);
+    fcntl(*fd, F_SETFL, FNDELAY);
   }
 
   /* set raw input, 1 second timeout */

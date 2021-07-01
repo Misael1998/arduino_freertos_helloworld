@@ -57,16 +57,23 @@ void vPortTask(void *pvParameters) {
   char *bufptr; /* Current char in buffer */
   int nbytes;   /* Number of bytes read */
   int tries;
+  int count = 0;
   fd = (int *)pvParameters;
+  bzero(buffer, sizeof(buffer));
+
+  char *msg = "misa";
 
   for (;;) {
+    write(*fd, msg, sizeof(msg));
+    count++;
     bufptr = buffer;
     while ((nbytes = read(*fd, bufptr, buffer + sizeof(buffer) - bufptr - 1)) >
            0) {
       bufptr += nbytes;
       if (bufptr[-1] == '\n' || bufptr[-1] == '\r') break;
     }
-    printf("%s", buffer);
+    printf("%d%s\n", count, buffer);
+    bzero(buffer, sizeof(buffer));
     vTaskDelay(1000);
   }
 }
