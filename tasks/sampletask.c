@@ -65,14 +65,14 @@ void vPortTask(void *pvParameters) {
 
   for (;;) {
     write(*fd, msg, sizeof(msg));
-    count++;
     bufptr = buffer;
     while ((nbytes = read(*fd, bufptr, buffer + sizeof(buffer) - bufptr - 1)) >
            0) {
       bufptr += nbytes;
+      count++;
+      printf("%d%s\n", count, buffer);
       if (bufptr[-1] == '\n' || bufptr[-1] == '\r') break;
     }
-    printf("%d%s\n", count, buffer);
     bzero(buffer, sizeof(buffer));
     vTaskDelay(1000);
   }
